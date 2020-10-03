@@ -466,7 +466,13 @@ public abstract class AbstractReader {
     }
 
     protected void readImplicitParameters(Method method, Operation operation) {
+	// handle annotation on method level:
         ApiImplicitParams implicitParams = AnnotationUtils.findAnnotation(method, ApiImplicitParams.class);
+        if (implicitParams == null ) {
+            // if no implicit params are found on method level, try the class level:
+            implicitParams = AnnotationUtils.findAnnotation(method.getDeclaringClass(), ApiImplicitParams.class);
+        }
+	    
         if (implicitParams == null) {
             return;
         }
