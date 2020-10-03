@@ -42,7 +42,7 @@ public abstract class AbstractReader {
     protected List<ResponseMessageOverride> responseMessageOverrides;
 
     protected String operationIdFormat;
-    
+
     /**
      * Supported parameters: {{packageName}}, {{className}}, {{methodName}}, {{httpMethod}}
      * Suggested default value is: "{{className}}_{{methodName}}_{{httpMethod}}"
@@ -466,13 +466,13 @@ public abstract class AbstractReader {
     }
 
     protected void readImplicitParameters(Method method, Operation operation) {
-	// handle annotation on method level:
+	    // handle annotation on method level:
         ApiImplicitParams implicitParams = AnnotationUtils.findAnnotation(method, ApiImplicitParams.class);
         if (implicitParams == null ) {
             // if no implicit params are found on method level, try the class level:
             implicitParams = AnnotationUtils.findAnnotation(method.getDeclaringClass(), ApiImplicitParams.class);
         }
-	    
+
         if (implicitParams == null) {
             return;
         }
@@ -528,22 +528,22 @@ public abstract class AbstractReader {
             extension.decorateOperation(operation, method, chain);
         }
     }
-    
+
     protected String getOperationId(Method method, String httpMethod) {
   		if (this.operationIdFormat == null) {
   			this.operationIdFormat = OPERATION_ID_FORMAT_DEFAULT;
   		}
-  		
+
   		String packageName = method.getDeclaringClass().getPackage().getName();
   		String className = method.getDeclaringClass().getSimpleName();
   		String methodName = method.getName();
-        
+
   		StrBuilder sb = new StrBuilder(this.operationIdFormat);
   		sb.replaceAll("{{packageName}}", packageName);
   		sb.replaceAll("{{className}}", className);
   		sb.replaceAll("{{methodName}}", methodName);
   		sb.replaceAll("{{httpMethod}}", httpMethod);
-  		
+
   		return sb.toString();
     }
 
